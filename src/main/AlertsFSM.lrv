@@ -1,0 +1,35 @@
+%%Making sure there are not more than 5 alerts showing in the page
+
+GLOBAL {
+	VARIABLES {
+		int alerts = 0;
+	}
+  
+   EVENTS{
+      checkAlerts(boolean valid_properties) = {*.checkAlerts(valid_properties, event)}
+      alertCreated() = {*.alertCreated()}
+      deleteAlerts() = {*.deleteAlerts()}
+   }
+
+   PROPERTY AlertProperty{
+      STATES{
+          BAD {
+             badState
+          }
+         NORMAL{
+            goodState
+            viewAlerts
+         }
+         STARTING{
+            viewAlerts
+         }
+      }
+
+      TRANSITIONS{
+      	viewAlerts -> viewAlerts[alertCreated\\alerts++;System.out.println("Alert created");] %%not a good implementation since the API returns all alerts in an eventLog
+      	viewAlerts -> viewAlerts[deleteAlerts\\alerts=0;System.out.println("Alerts were deleted");]
+        viewAlerts -> goodState[checkAlerts\\alerts<=5 && valid_properties == true;System.out.println("Alerts are valid");]
+        viewAlerts -> badState[checkAlerts\\alerts>5 && valid_properties == false;System.out.println("Alerts are invalid");]
+      }
+   }
+}

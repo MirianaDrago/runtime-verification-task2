@@ -1,0 +1,11 @@
+digraph _logic_AlertProperty {
+rankdir=LR;
+node [shape = circle]; goodState viewAlerts viewAlerts;
+node [shape = octagon]; badState;
+node [shape = point]; _s_s;
+_s_s -> viewAlerts;
+viewAlerts -> viewAlerts [ label = "(1) alertCreated\\\\alerts ++ ; System . out . println ( \" Alert created \" ) ; "];
+viewAlerts -> viewAlerts [ label = "(2) deleteAlerts\\\\alerts = 0 ; System . out . println ( \" Alerts were deleted \" ) ; "];
+viewAlerts -> goodState [ label = "(3) checkAlerts\\\\alerts <= 5 && valid_properties == true ; System . out . println ( \" Alerts are valid \" ) ; "];
+viewAlerts -> badState [ label = "(4) checkAlerts\\\\alerts > 5 && valid_properties == false ; System . out . println ( \" Alerts are invalid \" ) ; "];
+}

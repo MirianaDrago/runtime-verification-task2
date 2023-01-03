@@ -1,0 +1,12 @@
+digraph _logic_LoginProperty {
+rankdir=LR;
+node [shape = circle]; LoggedIn viewAlerts LoggedOut;
+node [shape = point]; _s_s;
+_s_s -> LoggedOut;
+viewAlerts -> viewAlerts [ label = "(1) visitAlerts\\\\inAlertsPage == true ; "];
+viewAlerts -> LoggedOut [ label = "(2) LogOut\\\\loggedIn = false && inAlertsPage == false ; System . out . println ( \" User logged out \" ) ; "];
+LoggedOut -> LoggedOut [ label = "(1) badLogin\\\\loggedIn == false && valid_credentials == false ; System . out . println ( \" User was unable to login. Credentials are invalid \" ) ; "];
+LoggedOut -> LoggedIn [ label = "(2) goodLogin\\\\loggedIn = true && valid_credentials == true ; System . out . println ( \" User logged in \" ) ; "];
+LoggedIn -> viewAlerts [ label = "(1) visitAlerts\\\\loggedIn == true && inAlertsPage == true ; System . out . println ( \" User viewed alerts \" ) ; "];
+LoggedIn -> LoggedOut [ label = "(2) LogOut\\\\loggedIn == false ; System . out . println ( \" User logged out \" ) ; "];
+}

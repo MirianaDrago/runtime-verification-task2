@@ -1,0 +1,37 @@
+%%Making sure the user is logged in and is able to view alerts
+
+GLOBAL {
+	VARIABLES {
+		boolean loggedIn = false;
+		boolean inAlertsPage = false;
+		boolean valid_credentials = false;
+	}
+
+	EVENTS{
+		badLogin() = {*.badLogin()}
+		goodLogin() = {*.goodLogin()}
+		visitAlerts() = {*.visitAlerts()}
+		LogOut() = {*.LogOut()}
+	}
+
+	PROPERTY LoginProperty{
+		STATES{
+			NORMAL{
+				LoggedIn
+				viewAlerts
+			}
+			STARTING{
+				LoggedOut
+			}
+		}
+
+		TRANSITIONS{
+			LoggedOut -> LoggedOut [badLogin\\loggedIn == false && valid_credentials == false;System.out.println("User was unable to login. Credentials are invalid");]
+			LoggedOut -> LoggedIn [goodLogin\\loggedIn = true && valid_credentials == true;System.out.println("User logged in");]
+			LoggedIn -> viewAlerts [visitAlerts\\loggedIn == true && inAlertsPage == true;System.out.println("User viewed alerts");]
+			LoggedIn -> LoggedOut [LogOut\\loggedIn == false;System.out.println("User logged out");]
+			viewAlerts -> viewAlerts [visitAlerts\\inAlertsPage == true;]
+			viewAlerts -> LoggedOut [LogOut\\loggedIn = false && inAlertsPage == false;System.out.println("User logged out");]
+		}
+	}
+}
